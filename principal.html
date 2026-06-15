@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetMatch - E-commerce para Mascotas</title>
+    <style>
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #4ecdc4;
+            --dark: #292f36;
+            --light: #f7fff7;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: var(--dark);
+        }
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .tag {
+            background-color: var(--secondary);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 1rem 0;
+        }
+        button {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--dark);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: var(--primary);
+        }
+        .clave-info {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🐾 PetMatch</h1>
+        <div>Catálogo Exclusivo</div>
+    </header>
+
+    <div class="container">
+        <h2>Nuestros Productos y Servicios</h2>
+        <div class="grid" id="catalogo">
+            </div>
+    </div>
+
+    <script>
+        // 1. APLICACIÓN DE LA UNIDAD 2: ESTRUCTURA TIPO REGISTRO
+        // Aquí modelamos la información utilizando un arreglo de objetos (registros).
+        // Cada objeto tiene campos con tipos de datos específicos y una CLAVE única.
+        
+        const baseDeDatosPetMatch = [
+            {
+                codigo_articulo: "PROD-001", // CLAVE PRINCIPAL (String)
+                nombre: "Collar de Cuero Grabado", // (String)
+                tipo: "Producto", // (String)
+                categoria_mascota: "Perro", // (String)
+                precio: 15000.00, // (Float)
+                es_personalizable: true // (Boolean)
+            },
+            {
+                codigo_articulo: "SERV-015", // CLAVE PRINCIPAL
+                nombre: "Adiestramiento Básico (1 Mes)", 
+                tipo: "Servicio", 
+                categoria_mascota: "Perro", 
+                precio: 45000.00, 
+                es_personalizable: false 
+            },
+            {
+                codigo_articulo: "PROD-002", // CLAVE PRINCIPAL
+                nombre: "Torre Rascador Premium", 
+                tipo: "Producto", 
+                categoria_mascota: "Gato", 
+                precio: 32000.50, 
+                es_personalizable: false 
+            },
+            {
+                codigo_articulo: "SERV-022", // CLAVE PRINCIPAL
+                nombre: "Spa y Peluquería a Domicilio", 
+                tipo: "Servicio", 
+                categoria_mascota: "Perro/Gato", 
+                precio: 12500.00, 
+                es_personalizable: true 
+            }
+        ];
+
+        // 2. Lógica para mostrar los registros en la interfaz
+        const contenedorCatalogo = document.getElementById('catalogo');
+
+        function renderizarCatalogo() {
+            baseDeDatosPetMatch.forEach(articulo => {
+                const tarjeta = document.createElement('div');
+                tarjeta.className = 'card';
+                
+                const personalizableBadge = articulo.es_personalizable 
+                    ? '<span class="tag" style="background-color: #ff9f1c;">Personalizable</span>' 
+                    : '';
+
+                tarjeta.innerHTML = `
+                    <span class="tag">${articulo.tipo}</span>
+                    ${personalizableBadge}
+                    <h3>${articulo.nombre}</h3>
+                    <p>Ideal para: <strong>${articulo.categoria_mascota}</strong></p>
+                    <div class="price">$${articulo.precio.toLocaleString('es-AR', {minimumFractionDigits: 2})}</div>
+                    <button onclick="alert('Añadido al carrito. Clave del registro: ${articulo.codigo_articulo}')">
+                        Lo quiero
+                    </button>
+                    <div class="clave-info">ID Sistema (Clave): ${articulo.codigo_articulo}</div>
+                `;
+                contenedorCatalogo.appendChild(tarjeta);
+            });
+        }
+
+        // Ejecutar al cargar la página
+        renderizarCatalogo();
+    </script>
+</body>
+</html>
