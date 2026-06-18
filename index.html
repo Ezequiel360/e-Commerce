@@ -3,87 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PetMatch - E-commerce para Mascotas</title>
+    <title>PetMatch - E-commerce con Carrito y Buscador</title>
     <style>
         :root {
-            --primary: #ff6b6b;
-            --secondary: #4ecdc4;
-            --dark: #292f36;
-            --light: #f7fff7;
+            --primary: #FF8C00;
+            --secondary: #2E8B57;
+            --bg: #F4F6F8;
+            --dark: #333;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
+            background-color: var(--bg);
             color: var(--dark);
         }
         header {
-            background-color: var(--primary);
+            background-color: var(--secondary);
             color: white;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 1.5rem;
+            text-align: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        header h1 {
-            margin: 0;
-            font-size: 1.8rem;
+        h1 { margin: 0; }
+        
+        /* Buscador */
+        .buscador-container {
+            max-width: 1200px;
+            margin: 1.5rem auto 0 auto;
+            padding: 0 1rem;
+            text-align: center;
         }
-        .container {
+        #buscador {
+            width: 100%;
+            max-width: 500px;
+            padding: 0.8rem 1rem;
+            font-size: 1rem;
+            border: 2px solid #ccc;
+            border-radius: 25px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        #buscador:focus {
+            border-color: var(--primary);
+        }
+
+        /* Layout Principal: Tienda y Carrito */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
             max-width: 1200px;
             margin: 2rem auto;
             padding: 0 1rem;
         }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
+        @media (min-width: 768px) {
+            .main-layout {
+                grid-template-columns: 2.5fr 1fr;
+            }
         }
-        .card {
+
+        /* Catálogo de Productos */
+        #productos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+        .tarjeta-producto {
             background: white;
             border-radius: 10px;
             padding: 1.5rem;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #eef0f2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-        .card:hover {
-            transform: translateY(-5px);
+        .clave-id {
+            font-size: 0.75rem;
+            color: #777;
+            background: #e9ecef;
+            padding: 4px 8px;
+            border-radius: 4px;
+            align-self: flex-start;
+            margin-bottom: 0.5rem;
+            font-family: monospace;
         }
-        .tag {
-            background-color: var(--secondary);
-            color: white;
-            padding: 0.2rem 0.5rem;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        .price {
-            font-size: 1.5rem;
+        .precio {
+            font-size: 1.3rem;
             font-weight: bold;
             color: var(--primary);
             margin: 1rem 0;
         }
-        button {
-            width: 100%;
-            padding: 0.8rem;
-            background-color: var(--dark);
+        .btn-accion {
+            background-color: var(--primary);
             color: white;
             border: none;
+            padding: 0.8rem;
+            width: 100%;
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
-            transition: background 0.3s;
+            transition: background 0.2s;
         }
-        button:hover {
-            background-color: var(--primary);
+        .btn-accion:hover {
+            background-color: #e67e22;
         }
-        .clave-info {
-            font-size: 0.75rem;
+
+        /* Sección del Carrito */
+        .carrito-seccion {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #eef0f2;
+            height: fit-content;
+        }
+        .carrito-seccion h2 {
+            margin-top: 0;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+        }
+        .item-carrito {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+        .item-carrito-detalles {
+            max-width: 70%;
+        }
+        .item-carrito-precio {
+            font-weight: bold;
+        }
+        .btn-eliminar {
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        .total-contenedor {
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+        .btn-vaciar {
+            background-color: #6c757d;
+            margin-top: 1rem;
+        }
+        .btn-vaciar:hover {
+            background-color: #5a6268;
+        }
+        .carrito-vacio {
             color: #888;
-            margin-top: 10px;
+            font-style: italic;
             text-align: center;
+            padding: 1rem 0;
         }
     </style>
 </head>
@@ -91,84 +171,228 @@
 
     <header>
         <h1>🐾 PetMatch</h1>
-        <div>Catálogo Exclusivo</div>
+        <p>Productos y servicios personalizados para tu mejor amigo</p>
     </header>
 
-    <div class="container">
-        <h2>Nuestros Productos y Servicios</h2>
-        <div class="grid" id="catalogo">
+    <div class="buscador-container">
+        <input type="text" id="buscador" placeholder="🔎 Buscar por nombre, categoría o ID...">
+    </div>
+
+    <div class="main-layout">
+        <section>
+            <h2>Catálogo de Productos</h2>
+            <div id="productos-grid">
+                </div>
+        </section>
+
+        <aside class="carrito-seccion">
+            <h2>🛒 Mi Carrito</h2>
+            <div id="carrito-lista">
+                </div>
+            <div class="total-contenedor">
+                <span>Total:</span>
+                <span id="carrito-total">$0,00</span>
             </div>
+            <button class="btn-accion btn-vaciar" id="btn-vaciar-carrito">Vaciar Carrito</button>
+        </aside>
     </div>
 
     <script>
-        // 1. APLICACIÓN DE LA UNIDAD 2: ESTRUCTURA TIPO REGISTRO
-        // Aquí modelamos la información utilizando un arreglo de objetos (registros).
-        // Cada objeto tiene campos con tipos de datos específicos y una CLAVE única.
-        
-        const baseDeDatosPetMatch = [
+        // BASE DE DATOS LOCAL (ESTRUCTURAS TIPO REGISTRO)
+        const baseDeDatosMascotas = [
             {
-                codigo_articulo: "PROD-001", // CLAVE PRINCIPAL (String)
-                nombre: "Collar de Cuero Grabado", // (String)
-                tipo: "Producto", // (String)
-                categoria_mascota: "Perro", // (String)
-                precio: 15000.00, // (Float)
-                es_personalizable: true // (Boolean)
+                id_producto: "PM-1001",
+                nombre: "Collar Reflectante Grabado",
+                categoria: "Accesorio",
+                precio: 15500.00,
+                stock: 12,
+                es_personalizable: true,
+                especie_destino: "Perro"
             },
             {
-                codigo_articulo: "SERV-015", // CLAVE PRINCIPAL
-                nombre: "Adiestramiento Básico (1 Mes)", 
-                tipo: "Servicio", 
-                categoria_mascota: "Perro", 
-                precio: 45000.00, 
-                es_personalizable: false 
+                id_producto: "PM-1002",
+                nombre: "Torre Rascador Premium",
+                categoria: "Juguete",
+                precio: 45000.50,
+                stock: 5,
+                es_personalizable: false,
+                especie_destino: "Gato"
             },
             {
-                codigo_articulo: "PROD-002", // CLAVE PRINCIPAL
-                nombre: "Torre Rascador Premium", 
-                tipo: "Producto", 
-                categoria_mascota: "Gato", 
-                precio: 32000.50, 
-                es_personalizable: false 
+                id_producto: "PM-1003",
+                nombre: "Sesión de Adiestramiento (1hr)",
+                categoria: "Servicio",
+                precio: 12000.00,
+                stock: 20,
+                es_personalizable: true,
+                especie_destino: "Ambos"
             },
             {
-                codigo_articulo: "SERV-022", // CLAVE PRINCIPAL
-                nombre: "Spa y Peluquería a Domicilio", 
-                tipo: "Servicio", 
-                categoria_mascota: "Perro/Gato", 
-                precio: 12500.00, 
-                es_personalizable: true 
+                id_producto: "PM-1004",
+                nombre: "Alimento Pro Plan Adulto 3kg",
+                categoria: "Alimento",
+                precio: 28000.00,
+                stock: 8,
+                es_personalizable: false,
+                especie_destino: "Perro"
+            },
+            {
+                id_producto: "PM-1005",
+                nombre: "Cama Iglú Térmica",
+                categoria: "Accesorio",
+                precio: 22500.00,
+                stock: 4,
+                es_personalizable: false,
+                especie_destino: "Gato"
             }
         ];
 
-        // 2. Lógica para mostrar los registros en la interfaz
-        const contenedorCatalogo = document.getElementById('catalogo');
+        // ESTRUCTURA DEL CARRITO DE COMPRAS
+        // Almacenará objetos con la estructura: { producto: {registro}, cantidad: X }
+        let carrito = [];
 
-        function renderizarCatalogo() {
-            baseDeDatosPetMatch.forEach(articulo => {
+        // Elementos del DOM
+        const gridProductos = document.getElementById('productos-grid');
+        const inputBuscador = document.getElementById('buscador');
+        const listaCarrito = document.getElementById('carrito-lista');
+        const totalCarrito = document.getElementById('carrito-total');
+        const btnVaciar = document.getElementById('btn-vaciar-carrito');
+
+        // Formateador de moneda para consistencia visual
+        const formatearMoneda = (valor) => {
+            return new Intl.NumberFormat('es-AR', { 
+                style: 'currency', 
+                currency: 'ARS' 
+            }).format(valor);
+        };
+
+        // FUNCIÓN 1: RENDERIZAR PRODUCTOS (Acepta una lista filtrada o completa)
+        function mostrarProductos(lista) {
+            gridProductos.innerHTML = '';
+            
+            if (lista.length === 0) {
+                gridProductos.innerHTML = '<p>No se encontraron productos que coincidan con la búsqueda.</p>';
+                return;
+            }
+
+            lista.forEach(registro => {
                 const tarjeta = document.createElement('div');
-                tarjeta.className = 'card';
-                
-                const personalizableBadge = articulo.es_personalizable 
-                    ? '<span class="tag" style="background-color: #ff9f1c;">Personalizable</span>' 
-                    : '';
+                tarjeta.className = 'tarjeta-producto';
 
                 tarjeta.innerHTML = `
-                    <span class="tag">${articulo.tipo}</span>
-                    ${personalizableBadge}
-                    <h3>${articulo.nombre}</h3>
-                    <p>Ideal para: <strong>${articulo.categoria_mascota}</strong></p>
-                    <div class="price">$${articulo.precio.toLocaleString('es-AR', {minimumFractionDigits: 2})}</div>
-                    <button onclick="alert('Añadido al carrito. Clave del registro: ${articulo.codigo_articulo}')">
-                        Lo quiero
-                    </button>
-                    <div class="clave-info">ID Sistema (Clave): ${articulo.codigo_articulo}</div>
+                    <div>
+                        <span class="clave-id">ID: ${registro.id_producto}</span>
+                        <h3>${registro.nombre}</h3>
+                        <p style="margin: 0.3rem 0;"><strong>Categoría:</strong> ${registro.categoria}</p>
+                        <p style="margin: 0.3rem 0;"><strong>Para:</strong> ${registro.especie_destino}</p>
+                        <p style="margin: 0.3rem 0;"><strong>Stock:</strong> ${registro.stock} uds.</p>
+                    </div>
+                    <div>
+                        <div class="precio">${formatearMoneda(registro.precio)}</div>
+                        <button class="btn-accion" onclick="agregarAlCarrito('${registro.id_producto}')">
+                            ${registro.es_personalizable ? 'Personalizar y Agregar' : 'Agregar al carrito'}
+                        </button>
+                    </div>
                 `;
-                contenedorCatalogo.appendChild(tarjeta);
+                gridProductos.appendChild(tarjeta);
             });
         }
 
-        // Ejecutar al cargar la página
-        renderizarCatalogo();
+        // FUNCIÓN 2: BUSCADOR FILTRADO
+        function filtrarProductos() {
+            const textoBusqueda = inputBuscador.value.toLowerCase().trim();
+            
+            const resultados = baseDeDatosMascotas.filter(registro => {
+                return (
+                    registro.nombre.toLowerCase().includes(textoBusqueda) ||
+                    registro.categoria.toLowerCase().includes(textoBusqueda) ||
+                    registro.id_producto.toLowerCase().includes(textoBusqueda)
+                );
+            });
+            
+            mostrarProductos(resultados);
+        }
+
+        // FUNCIÓN 3: AGREGAR AL CARRITO (Usa la clave principal id_producto)
+        function agregarAlCarrito(id) {
+            // Buscamos si el producto ya existe en el carrito temporal
+            const itemExistente = carrito.find(item => item.producto.id_producto === id);
+
+            if (itemExistente) {
+                // Si ya está, validamos stock antes de incrementar
+                if (itemExistente.cantidad < itemExistente.producto.stock) {
+                    itemExistente.cantidad++;
+                } else {
+                    alert("Lo sentimos, no hay más stock disponible de este producto.");
+                    return;
+                }
+            } else {
+                // Si no está, buscamos el registro original en la base de datos por su ID único
+                const productoOriginal = baseDeDatosMascotas.find(p => p.id_producto === id);
+                if (productoOriginal.stock > 0) {
+                    carrito.push({ producto: productoOriginal, cantidad: 1 });
+                } else {
+                    alert("Producto sin stock disponible.");
+                    return;
+                }
+            }
+
+            actualizarInterfazCarrito();
+        }
+
+        // FUNCIÓN 4: ELIMINAR UN ITEM DEL CARRITO (Usa la clave para filtrar/quitar)
+        function eliminarDelCarrito(id) {
+            carrito = carrito.filter(item => item.producto.id_producto !== id);
+            actualizarInterfazCarrito();
+        }
+
+        // FUNCIÓN 5: ACTUALIZAR LA INTERFAZ DEL CARRITO Y CALCULAR EL TOTAL
+        function actualizarInterfazCarrito() {
+            listaCarrito.innerHTML = '';
+            let acumuladorTotal = 0;
+
+            if (carrito.length === 0) {
+                listaCarrito.innerHTML = '<p class="carrito-vacio">El carrito está vacío.</p>';
+                totalCarrito.textContent = formatearMoneda(0);
+                return;
+            }
+
+            carrito.forEach(item => {
+                const subtotal = item.producto.price * item.cantidad; // Error intencional corregido abajo: usar item.producto.precio
+                const subtotalCorrecto = item.producto.precio * item.cantidad;
+                acumuladorTotal += subtotalCorrecto;
+
+                const divItem = document.createElement('div');
+                divItem.className = 'item-carrito';
+                divItem.innerHTML = `
+                    <div class="item-carrito-detalles">
+                        <strong>${item.producto.nombre}</strong><br>
+                        <small>Cant: ${item.cantidad} x ${formatearMoneda(item.producto.precio)}</small>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="item-carrito-precio">${formatearMoneda(subtotalCorrecto)}</span><br>
+                        <button class="btn-eliminar" onclick="eliminarDelCarrito('${item.producto.id_producto}')">Quitar</button>
+                    </div>
+                `;
+                listaCarrito.appendChild(divItem);
+            });
+
+            totalCarrito.textContent = formatearMoneda(acumuladorTotal);
+        }
+
+        // Event Listeners
+        inputBuscador.addEventListener('input', filtrarProductos);
+        
+        btnVaciar.addEventListener('click', () => {
+            carrito = [];
+            actualizarInterfazCarrito();
+        });
+
+        // Inicialización de la App al cargar la ventana
+        window.onload = () => {
+            mostrarProductos(baseDeDatosMascotas);
+            actualizarInterfazCarrito();
+        };
     </script>
 </body>
 </html>
